@@ -39,7 +39,7 @@ const Gameboard = (() => {
 const GameController = (() => {
   const players = [];
 
-  const activePlayer = players[0];
+  let activePlayer = players[0];
 
   const addPlayer = (name, symbol) => {
     if (players.length === 2) {
@@ -48,8 +48,16 @@ const GameController = (() => {
       players.push(Player(name, symbol));
     }
   };
+  const togglePlayerTurn = () => {
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    console.log(`${activePlayer.getName()}'s turn.`);
+  };
 
-  return { addPlayer };
+  return { addPlayer, togglePlayerTurn };
 })();
+
+GameController.addPlayer("Mike", "O");
+GameController.addPlayer("Betty", "X");
+GameController.togglePlayerTurn();
 
 Gameboard.printBoard();
