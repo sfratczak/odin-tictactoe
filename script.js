@@ -5,13 +5,26 @@ function Player(name, symbol) {
   return { getName, getSymbol };
 }
 
+function Cell() {
+  let value = "";
+
+  const getValue = () => value;
+  const setValue = (newValue) => {
+    if (value === "") {
+      value = newValue;
+    }
+  };
+
+  return { getValue, setValue };
+}
+
 const Gameboard = (() => {
   const board = [];
 
   for (let i = 0; i < 3; i += 1) {
     board[i] = [];
     for (let j = 0; j < 3; j += 1) {
-      board[i].push(/* Cell */);
+      board[i].push(Cell());
     }
   }
 
