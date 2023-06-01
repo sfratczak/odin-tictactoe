@@ -29,13 +29,14 @@ const Gameboard = (() => {
   }
 
   const getBoard = () => board;
+  const printBoard = () => {
+    board.map((row) => console.log(row.map((cell) => cell.getValue())));
+  };
 
-  return { getBoard };
+  return { getBoard, printBoard };
 })();
 
 const GameController = (() => {
-  const board = Gameboard();
-
   const players = [];
 
   const activePlayer = players[0];
@@ -50,3 +51,5 @@ const GameController = (() => {
 
   return { addPlayer };
 })();
+
+Gameboard.printBoard();
