@@ -21,19 +21,21 @@ function Cell() {
 const Gameboard = (() => {
   const board = [];
 
-  for (let i = 0; i < 3; i += 1) {
-    board[i] = [];
-    for (let j = 0; j < 3; j += 1) {
-      board[i].push(Cell());
+  const init = () => {
+    for (let i = 0; i < 3; i += 1) {
+      board[i] = [];
+      for (let j = 0; j < 3; j += 1) {
+        board[i].push(Cell());
+      }
     }
-  }
-
+  };
   const getBoard = () => board;
   const printBoard = () => {
     board.map((row) => console.log(row.map((cell) => cell.getValue())));
   };
+  // placeSymbol - if Cell is empty, check active player, Cell.setValue(newValue)
 
-  return { getBoard, printBoard };
+  return { init, getBoard, printBoard };
 })();
 
 const GameController = (() => {
@@ -56,8 +58,28 @@ const GameController = (() => {
   return { addPlayer, togglePlayerTurn };
 })();
 
+const DisplayController = (() => {
+  const board = Gameboard;
+  const gameboardDiv = document.getElementById("gameboard");
+
+  const refreshBoard = () => {
+    board.getBoard().forEach((row) => {
+      row.forEach((cell) => {
+        const cellDiv = document.createElement("div");
+        cellDiv.classList.add("cell");
+        cellDiv.textContent = cell.getValue();
+
+        gameboardDiv.appendChild(cellDiv);
+      });
+    });
+  };
+
+  return { refreshBoard };
+})();
+
 GameController.addPlayer("Mike", "O");
 GameController.addPlayer("Betty", "X");
 GameController.togglePlayerTurn();
 
-Gameboard.printBoard();
+Gameboard.init();
+DisplayController.refreshBoard();
