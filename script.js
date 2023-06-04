@@ -36,9 +36,24 @@ const Gameboard = (() => {
   const placeSymbol = (cell, symbol) => {
     cell.setValue(symbol);
   };
-  // placeSymbol - if Cell is empty, check active player, Cell.setValue(newValue)
+  const getNumberedBoard = () => {
+    const numberedBoard = board.map((rows) =>
+      rows.map((cell) => {
+        if (cell.getValue() === "X") {
+          return 1;
+        }
+        if (cell.getValue() === "O") {
+          return -1;
+        }
 
-  return { init, getBoard, printBoard, placeSymbol };
+        return 0;
+      })
+    );
+
+    return numberedBoard;
+  };
+
+  return { init, getBoard, printBoard, placeSymbol, getNumberedBoard };
 })();
 
 const GameController = (() => {
@@ -58,9 +73,36 @@ const GameController = (() => {
     console.log(`${activePlayer.getName()}'s turn.`);
   };
   const getActivePlayer = () => activePlayer;
-  // check win condition
+  const checkWinCondition = () => {
+    const numBoard = Gameboard.getNumberedBoard();
+    const row1sum = numBoard[0].reduce((a, b) => a + b, 0);
+    const row2sum = numBoard[1].reduce((a, b) => a + b, 0);
+    const row3sum = numBoard[2].reduce((a, b) => a + b, 0);
+    const col1sum = numBoard[0][0] + numBoard[1][0] + numBoard[2][0];
+    const col2sum = numBoard[0][1] + numBoard[1][1] + numBoard[2][1];
+    const col3sum = numBoard[0][2] + numBoard[1][2] + numBoard[2][2];
+    const diag1sum = numBoard[0][0] + numBoard[1][1] + numBoard[2][2];
+    const diag2sum = numBoard[0][2] + numBoard[1][1] + numBoard[2][0];
+    const winConditions = [
+      row1sum,
+      row2sum,
+      row3sum,
+      col1sum,
+      col2sum,
+      col3sum,
+      diag1sum,
+      diag2sum,
+    ];
 
-  return { addPlayer, togglePlayerTurn, getActivePlayer };
+    if (winConditions.includes(-3)) {
+      console.log("WINNER O");
+    }
+    if (winConditions.includes(3)) {
+      console.log("WINNER X");
+    }
+  };
+
+  return { addPlayer, togglePlayerTurn, getActivePlayer, checkWinCondition };
 })();
 
 const DisplayController = (() => {
@@ -85,6 +127,7 @@ const DisplayController = (() => {
           GameController.togglePlayerTurn();
           DisplayController.clearBoard();
           DisplayController.fillBoard();
+          GameController.checkWinCondition();
           // + call check win condition
         });
 
