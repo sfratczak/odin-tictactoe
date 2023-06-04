@@ -33,9 +33,12 @@ const Gameboard = (() => {
   const printBoard = () => {
     board.map((row) => console.log(row.map((cell) => cell.getValue())));
   };
+  const placeSymbol = (cell, symbol) => {
+    cell.setValue(symbol);
+  };
   // placeSymbol - if Cell is empty, check active player, Cell.setValue(newValue)
 
-  return { init, getBoard, printBoard };
+  return { init, getBoard, printBoard, placeSymbol };
 })();
 
 const GameController = (() => {
@@ -54,27 +57,43 @@ const GameController = (() => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
     console.log(`${activePlayer.getName()}'s turn.`);
   };
+  const getActivePlayer = () => activePlayer;
+  // check win condition
 
-  return { addPlayer, togglePlayerTurn };
+  return { addPlayer, togglePlayerTurn, getActivePlayer };
 })();
 
 const DisplayController = (() => {
-  const board = Gameboard;
   const gameboardDiv = document.getElementById("gameboard");
 
-  const refreshBoard = () => {
-    board.getBoard().forEach((row) => {
+  const clearBoard = () => {
+    while (gameboardDiv.firstChild) {
+      gameboardDiv.removeChild(gameboardDiv.lastChild);
+    }
+  };
+  const fillBoard = () => {
+    Gameboard.getBoard().forEach((row) => {
       row.forEach((cell) => {
         const cellDiv = document.createElement("div");
         cellDiv.classList.add("cell");
         cellDiv.textContent = cell.getValue();
+        cellDiv.addEventListener("click", () => {
+          Gameboard.placeSymbol(
+            cell,
+            GameController.getActivePlayer().getSymbol()
+          );
+          GameController.togglePlayerTurn();
+          DisplayController.clearBoard();
+          DisplayController.fillBoard();
+          // + call check win condition
+        });
 
         gameboardDiv.appendChild(cellDiv);
       });
     });
   };
 
-  return { refreshBoard };
+  return { clearBoard, fillBoard };
 })();
 
 GameController.addPlayer("Mike", "O");
@@ -82,4 +101,4 @@ GameController.addPlayer("Betty", "X");
 GameController.togglePlayerTurn();
 
 Gameboard.init();
-DisplayController.refreshBoard();
+DisplayController.fillBoard();
