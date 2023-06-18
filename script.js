@@ -63,14 +63,14 @@ const GameController = (() => {
 
   const addPlayer = (name, symbol) => {
     if (players.length === 2) {
-      alert("Error: Already two players present.");
+      DisplayController.setStatus("Error: Already two players present.");
     } else {
       players.push(Player(name, symbol));
     }
   };
   const togglePlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
-    console.log(`${activePlayer.getName()}'s turn.`);
+    DisplayController.setStatus(`${activePlayer.getName()}'s turn.`);
   };
   const getActivePlayer = () => activePlayer;
   const checkWinCondition = () => {
@@ -95,10 +95,10 @@ const GameController = (() => {
     ];
 
     if (winConditions.includes(-3)) {
-      console.log("WINNER O");
+      DisplayController.setStatus("WINNER O");
     }
     if (winConditions.includes(3)) {
-      console.log("WINNER X");
+      DisplayController.setStatus("WINNER X");
     }
   };
 
@@ -107,6 +107,7 @@ const GameController = (() => {
 
 const DisplayController = (() => {
   const gameboardDiv = document.getElementById("gameboard");
+  const statusTextDiv = document.getElementById("status-text");
 
   const clearBoard = () => {
     while (gameboardDiv.firstChild) {
@@ -128,7 +129,6 @@ const DisplayController = (() => {
           DisplayController.clearBoard();
           DisplayController.fillBoard();
           GameController.checkWinCondition();
-          // + call check win condition
         });
 
         gameboardDiv.appendChild(cellDiv);
@@ -136,7 +136,11 @@ const DisplayController = (() => {
     });
   };
 
-  return { clearBoard, fillBoard };
+  const setStatus = (str) => {
+    statusTextDiv.textContent = str;
+  };
+
+  return { clearBoard, fillBoard, setStatus };
 })();
 
 GameController.addPlayer("Mike", "O");
