@@ -154,7 +154,8 @@ body {
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: 64px 1fr;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Josefin Slab", "Times New Roman", serif;
+  font-size: 32px;
   background-color: var(--clr-white);
 }
 
@@ -171,16 +172,22 @@ header img {
 
 main {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr 456px 1fr;
+}
+
+.main-content {
+  grid-column: 2;
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 32px;
+  margin-top: 32px;
 }
 
 .gb-container {
-  grid-column: 2;
   height: 456px;
   width: 456px;
   display: grid;
   place-content: center;
-  margin-top: 32px;
 }
 
 #gameboard {
@@ -197,4 +204,8 @@ main {
   font-size: 3rem;
   font-weight: bold;
   cursor: pointer;
+}
+
+#status-text {
+  text-align: center;
 }
