@@ -206,14 +206,6 @@ main {
   cursor: pointer;
 }
 
-.cell .x-full {
-  background-image: url(./img/x-full.svg);
-}
-
-.cell .o-full {
-  background-image: url(./img/o-full.svg);
-}
-
 #status-text {
   text-align: center;
 }
