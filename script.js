@@ -22,6 +22,8 @@ const Gameboard = (() => {
   const board = [];
 
   const init = () => {
+    board.length = 0;
+
     for (let i = 0; i < 3; i += 1) {
       board[i] = [];
       for (let j = 0; j < 3; j += 1) {
@@ -69,6 +71,12 @@ const GameController = (() => {
   let activePlayer = players[0];
   let gameOver = false;
 
+  const newGame = () => {
+    gameOver = false;
+    Gameboard.init();
+    DisplayController.clearBoard();
+    DisplayController.fillBoard();
+  };
   const addPlayer = (name, symbol) => {
     if (players.length === 2) {
       DisplayController.setStatus("Error: Already two players present.");
@@ -115,6 +123,7 @@ const GameController = (() => {
 
   return {
     addPlayer,
+    newGame,
     togglePlayerTurn,
     getActivePlayer,
     checkWinCondition,
@@ -171,7 +180,6 @@ const DisplayController = (() => {
       });
     });
   };
-
   const setStatus = (str) => {
     statusTextDiv.textContent = str;
   };
@@ -182,6 +190,4 @@ const DisplayController = (() => {
 GameController.addPlayer("Mike", "O");
 GameController.addPlayer("Betty", "X");
 GameController.togglePlayerTurn();
-
-Gameboard.init();
-DisplayController.fillBoard();
+GameController.newGame();
