@@ -67,6 +67,7 @@ const GameController = (() => {
   const players = [];
 
   let activePlayer = players[0];
+  let gameOver = false;
 
   const addPlayer = (name, symbol) => {
     if (players.length === 2) {
@@ -102,14 +103,23 @@ const GameController = (() => {
     ];
 
     if (winConditions.includes(-3)) {
+      gameOver = true;
       DisplayController.setStatus("WINNER O");
     }
     if (winConditions.includes(3)) {
+      gameOver = true;
       DisplayController.setStatus("WINNER X");
     }
   };
+  const isGameOver = () => gameOver;
 
-  return { addPlayer, togglePlayerTurn, getActivePlayer, checkWinCondition };
+  return {
+    addPlayer,
+    togglePlayerTurn,
+    getActivePlayer,
+    checkWinCondition,
+    isGameOver,
+  };
 })();
 
 const DisplayController = (() => {
@@ -140,6 +150,10 @@ const DisplayController = (() => {
         }
 
         cellDiv.addEventListener("click", () => {
+          if (GameController.isGameOver()) {
+            return;
+          }
+
           if (
             Gameboard.placeSymbol(
               cell,
