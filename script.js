@@ -149,11 +149,13 @@ const DisplayController = (() => {
         if (cell.getValue() === "X") {
           const xFull = document.createElement("img");
           xFull.src = "./img/x-full.svg";
+          xFull.alt = "X";
 
           cellDiv.appendChild(xFull);
         } else if (cell.getValue() === "O") {
           const xFull = document.createElement("img");
           xFull.src = "./img/o-full.svg";
+          xFull.alt = "O";
 
           cellDiv.appendChild(xFull);
         }
