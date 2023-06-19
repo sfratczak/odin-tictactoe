@@ -150,6 +150,10 @@ table {
   border: 8px solid var(--clr-black);
 }
 
+.border-2px-dashed {
+  border: 2px dashed var(--clr-black);
+}
+
 body {
   display: grid;
   grid-auto-flow: column;
@@ -208,4 +212,39 @@ main {
 
 #status-text {
   text-align: center;
+}
+
+.players {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 72px;
+}
+
+.players div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 16px;
+  gap: 16px;
+
+  width: 192px;
+  height: 176px;
+}
+
+.players label {
+  width: 64px;
+  height: 64px;
+  flex: none;
+}
+
+.players input {
+  width: 160px;
+  height: 32px;
+  border: none;
+  outline: none;
+  padding: 0;
+  font-family: inherit;
+  text-align: center;
+  font-size: 32px;
 }
