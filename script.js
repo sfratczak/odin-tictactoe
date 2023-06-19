@@ -34,7 +34,14 @@ const Gameboard = (() => {
     board.map((row) => console.log(row.map((cell) => cell.getValue())));
   };
   const placeSymbol = (cell, symbol) => {
-    cell.setValue(symbol);
+    let isValidPlacement = false;
+
+    if (cell.getValue() === "") {
+      cell.setValue(symbol);
+      isValidPlacement = true;
+    }
+
+    return isValidPlacement;
   };
   const getNumberedBoard = () => {
     const numberedBoard = board.map((rows) =>
@@ -119,16 +126,31 @@ const DisplayController = (() => {
       row.forEach((cell) => {
         const cellDiv = document.createElement("div");
         cellDiv.classList.add("cell");
-        cellDiv.textContent = cell.getValue();
+
+        if (cell.getValue() === "X") {
+          const xFull = document.createElement("img");
+          xFull.src = "./img/x-full.svg";
+
+          cellDiv.appendChild(xFull);
+        } else if (cell.getValue() === "O") {
+          const xFull = document.createElement("img");
+          xFull.src = "./img/o-full.svg";
+
+          cellDiv.appendChild(xFull);
+        }
+
         cellDiv.addEventListener("click", () => {
-          Gameboard.placeSymbol(
-            cell,
-            GameController.getActivePlayer().getSymbol()
-          );
-          GameController.togglePlayerTurn();
-          DisplayController.clearBoard();
-          DisplayController.fillBoard();
-          GameController.checkWinCondition();
+          if (
+            Gameboard.placeSymbol(
+              cell,
+              GameController.getActivePlayer().getSymbol()
+            )
+          ) {
+            GameController.togglePlayerTurn();
+            DisplayController.clearBoard();
+            DisplayController.fillBoard();
+            GameController.checkWinCondition();
+          }
         });
 
         gameboardDiv.appendChild(cellDiv);
