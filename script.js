@@ -153,11 +153,11 @@ const DisplayController = (() => {
 
           cellDiv.appendChild(xFull);
         } else if (cell.getValue() === "O") {
-          const xFull = document.createElement("img");
-          xFull.src = "./img/o-full.svg";
-          xFull.alt = "O";
+          const oFull = document.createElement("img");
+          oFull.src = "./img/o-full.svg";
+          oFull.alt = "O";
 
-          cellDiv.appendChild(xFull);
+          cellDiv.appendChild(oFull);
         }
 
         cellDiv.addEventListener("click", () => {
