@@ -72,9 +72,7 @@ const GameController = (() => {
   let gameOver = false;
 
   const playerNameSetup = () => {
-    const playerOneDiv = document.querySelector(".player-one");
     const playerOneInput = document.getElementById("player-one-name");
-    const playerTwoDiv = document.querySelector(".player-two");
     const playerTwoInput = document.getElementById("player-two-name");
     const beginBtn = document.querySelector(".btn-begin");
 
@@ -89,11 +87,15 @@ const GameController = (() => {
         GameController.addPlayer("Player 1", "O");
       }
 
+      DisplayController.setPlayerDivCSSActive(".player-one");
+
       if (playerOneInput.value !== "") {
         GameController.addPlayer(playerTwoInput.value, "X");
       } else {
         GameController.addPlayer("Player 2", "X");
       }
+
+      DisplayController.setPlayerDivCSSActive(".player-two");
 
       GameController.newGame();
     });
@@ -164,6 +166,22 @@ const DisplayController = (() => {
   const gameboardDiv = document.getElementById("gameboard");
   const statusTextDiv = document.getElementById("status-text");
 
+  const xFull = document.createElement("img");
+  xFull.src = "./img/x-full.svg";
+  xFull.alt = "X";
+
+  const xEmpty = document.createElement("img");
+  xEmpty.src = "./img/x-empty.svg";
+  xEmpty.alt = "X";
+
+  const oFull = document.createElement("img");
+  oFull.src = "./img/o-full.svg";
+  oFull.alt = "O";
+
+  const oEmpty = document.createElement("img");
+  oEmpty.src = "./img/o-empty.svg";
+  oEmpty.alt = "O";
+
   const clearBoard = () => {
     while (gameboardDiv.firstChild) {
       gameboardDiv.removeChild(gameboardDiv.lastChild);
@@ -176,16 +194,8 @@ const DisplayController = (() => {
         cellDiv.classList.add("cell");
 
         if (cell.getValue() === "X") {
-          const xFull = document.createElement("img");
-          xFull.src = "./img/x-full.svg";
-          xFull.alt = "X";
-
           cellDiv.appendChild(xFull);
         } else if (cell.getValue() === "O") {
-          const oFull = document.createElement("img");
-          oFull.src = "./img/o-full.svg";
-          oFull.alt = "O";
-
           cellDiv.appendChild(oFull);
         }
 
@@ -214,8 +224,46 @@ const DisplayController = (() => {
   const setStatus = (str) => {
     statusTextDiv.textContent = str;
   };
+  const setPlayerDivCSSActive = (playerDivClassName) => {
+    const playerDiv = document.querySelector(playerDivClassName);
+    const plusLabel = playerDiv.querySelector("label");
+    const input = playerDiv.querySelector("input");
+    const playerName = document.createElement("div");
+    playerName.classList.add("player-name");
 
-  return { clearBoard, fillBoard, setStatus };
+    if (playerDivClassName === ".player-one") {
+      if (input.value !== "") {
+        playerName.textContent = input.value;
+      } else {
+        playerName.textContent = "Player 1";
+      }
+
+      plusLabel.remove();
+      input.remove();
+
+      playerDiv.appendChild(oEmpty);
+      playerDiv.appendChild(playerName);
+    } else if (playerDivClassName === ".player-two") {
+      if (input.value !== "") {
+        playerName.textContent = input.value;
+      } else {
+        playerName.textContent = "Player 2";
+      }
+
+      plusLabel.remove();
+      input.remove();
+
+      playerDiv.appendChild(xEmpty);
+      playerDiv.appendChild(playerName);
+    }
+
+    if (playerDiv.classList.contains("border-2px-dashed")) {
+      playerDiv.classList.remove("border-2px-dashed");
+      playerDiv.classList.add("border-2px");
+    }
+  };
+
+  return { clearBoard, fillBoard, setStatus, setPlayerDivCSSActive };
 })();
 
 GameController.playerNameSetup();

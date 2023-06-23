@@ -232,13 +232,15 @@ main {
   height: 176px;
 }
 
-.players label {
+.players label,
+.players img {
   width: 64px;
   height: 64px;
   flex: none;
 }
 
-.players input {
+.players input,
+.players .player-name {
   width: 160px;
   height: 32px;
   border: none;
