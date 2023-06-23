@@ -71,11 +71,39 @@ const GameController = (() => {
   let activePlayer = players[0];
   let gameOver = false;
 
+  const playerNameSetup = () => {
+    const playerOneDiv = document.querySelector(".player-one");
+    const playerOneInput = document.getElementById("player-one-name");
+    const playerTwoDiv = document.querySelector(".player-two");
+    const playerTwoInput = document.getElementById("player-two-name");
+    const beginBtn = document.querySelector(".btn-begin");
+
+    DisplayController.setStatus("Add players to begin the game.");
+
+    beginBtn.addEventListener("click", () => {
+      players.length = 0;
+
+      if (playerOneInput.value !== "") {
+        GameController.addPlayer(playerOneInput.value, "O");
+      } else {
+        GameController.addPlayer("Player 1", "O");
+      }
+
+      if (playerOneInput.value !== "") {
+        GameController.addPlayer(playerTwoInput.value, "X");
+      } else {
+        GameController.addPlayer("Player 2", "X");
+      }
+
+      GameController.newGame();
+    });
+  };
   const newGame = () => {
     gameOver = false;
     Gameboard.init();
     DisplayController.clearBoard();
     DisplayController.fillBoard();
+    GameController.togglePlayerTurn();
   };
   const addPlayer = (name, symbol) => {
     if (players.length === 2) {
@@ -128,6 +156,7 @@ const GameController = (() => {
     getActivePlayer,
     checkWinCondition,
     isGameOver,
+    playerNameSetup,
   };
 })();
 
@@ -189,7 +218,4 @@ const DisplayController = (() => {
   return { clearBoard, fillBoard, setStatus };
 })();
 
-GameController.addPlayer("Mike", "O");
-GameController.addPlayer("Betty", "X");
-GameController.togglePlayerTurn();
-GameController.newGame();
+GameController.playerNameSetup();
