@@ -76,6 +76,8 @@ const GameController = (() => {
     const playerTwoInput = document.getElementById("player-two-name");
     const beginBtn = document.querySelector(".btn-begin");
 
+    DisplayController.revealButton(beginBtn);
+    DisplayController.hideBoardDiv();
     DisplayController.setStatus("Add players to begin the game.");
 
     beginBtn.addEventListener("click", () => {
@@ -97,6 +99,8 @@ const GameController = (() => {
 
       DisplayController.setPlayerDivCSSActive(".player-two");
 
+      DisplayController.hideButton(beginBtn);
+      DisplayController.revealBoardDiv();
       GameController.newGame();
     });
   };
@@ -163,6 +167,7 @@ const GameController = (() => {
 })();
 
 const DisplayController = (() => {
+  const gameboardContainer = document.querySelector(".gb-container");
   const gameboardDiv = document.getElementById("gameboard");
   const statusTextDiv = document.getElementById("status-text");
 
@@ -182,6 +187,12 @@ const DisplayController = (() => {
   oEmpty.src = "./img/o-empty.svg";
   oEmpty.alt = "O";
 
+  const hideBoardDiv = () => {
+    gameboardContainer.style.display = "none";
+  };
+  const revealBoardDiv = () => {
+    gameboardContainer.style.display = "grid";
+  };
   const clearBoard = () => {
     while (gameboardDiv.firstChild) {
       gameboardDiv.removeChild(gameboardDiv.lastChild);
@@ -262,8 +273,23 @@ const DisplayController = (() => {
       playerDiv.classList.add("border-2px");
     }
   };
+  const hideButton = (button) => {
+    button.style.display = "none";
+  };
+  const revealButton = (button) => {
+    button.style.display = "inline-block";
+  };
 
-  return { clearBoard, fillBoard, setStatus, setPlayerDivCSSActive };
+  return {
+    clearBoard,
+    fillBoard,
+    setStatus,
+    setPlayerDivCSSActive,
+    hideBoardDiv,
+    revealBoardDiv,
+    hideButton,
+    revealButton,
+  };
 })();
 
 GameController.playerNameSetup();
