@@ -192,6 +192,35 @@ main {
   width: 456px;
   display: grid;
   place-content: center;
+  position: relative;
+}
+
+.btn-restart {
+  background-color: var(--clr-white);
+  border: 4px solid var(--clr-black);
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-content: center;
+  position: absolute;
+  top: 24px;
+  left: -96px;
+  cursor: pointer;
+}
+
+.btn-restart img {
+  width: 32px;
+}
+
+.btn-restart:hover,
+.btn-restart.filled {
+  background-color: var(--clr-black);
+  color: var(--clr-white);
+}
+
+.btn-restart:hover img,
+.btn-restart.filled {
+  content: url(./img/refresh-outline-white.svg);
 }
 
 #gameboard {
@@ -261,11 +290,4 @@ main {
   font-size: 32px;
   cursor: pointer;
   margin: 0 auto 32px auto;
-}
-
-.btn-begin:disabled {
-  background-color: var(--clr-white);
-  color: var(--clr-black);
-  border: 2px solid var(--clr-black);
-  cursor: not-allowed;
 }
