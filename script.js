@@ -194,9 +194,9 @@ const DisplayController = (() => {
         cellDiv.classList.add("cell");
 
         if (cell.getValue() === "X") {
-          cellDiv.appendChild(xFull);
+          cellDiv.appendChild(xFull.cloneNode());
         } else if (cell.getValue() === "O") {
-          cellDiv.appendChild(oFull);
+          cellDiv.appendChild(oFull.cloneNode());
         }
 
         cellDiv.addEventListener("click", () => {
