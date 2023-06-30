@@ -68,6 +68,8 @@ const Gameboard = (() => {
 const GameController = (() => {
   const players = [];
 
+  const restartButton = document.querySelector(".btn-restart");
+
   let activePlayer = players[0];
   let gameOver = false;
 
@@ -105,6 +107,8 @@ const GameController = (() => {
     });
   };
   const newGame = () => {
+    restartButton.addEventListener("click", GameController.newGame);
+
     gameOver = false;
     Gameboard.init();
     DisplayController.clearBoard();
