@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-confetti@2.10.1/tsparticles.confetti.bundle.min.js"></script>
     <link rel="stylesheet" href="./style.css" />
     <title>Odin Tic Tac Toe</title>
     <style>
@@ -23,7 +24,10 @@
           </button>
           <div id="gameboard"></div>
         </div>
-        <div id="status-text">Status Text</div>
+        <div id="status-text">
+          <div id="emitter"></div>
+          Status Text
+        </div>
         <div class="players">
           <div class="player-one border-2px-dashed">
             <label for="player-one-name"
@@ -46,6 +50,7 @@
               spellcheck="false" />
           </div>
         </div>
+        <div id="confetti"></div>
         <button class="btn-begin">Begin</button>
       </div>
     </main>

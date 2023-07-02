@@ -165,6 +165,12 @@ const GameController = (() => {
         `${GameController.getActivePlayer().getName()} wins!`
       );
       DisplayController.procGameOverLayout();
+      // confetti from script imported through HTML
+      confetti({
+        particleCount: 150,
+        spread: 135,
+        origin: { y: 0.6 },
+      });
     }
     if (isBoardFull() && !gameOver) {
       gameOver = true;
@@ -342,6 +348,7 @@ const DisplayController = (() => {
   const revealButton = (button) => {
     button.style.display = "inline-block";
   };
+  const confettiExplosion = () => {};
   const procPlayerWonLayout = () => {
     // TODO: Proc the confetti on status text
     const winner = GameController.getWinner();
