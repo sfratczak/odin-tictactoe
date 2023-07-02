@@ -149,14 +149,18 @@ const GameController = (() => {
       diag1sum,
       diag2sum,
     ];
+    const isBoardFull = () =>
+      numBoard.filter((row) => row.includes(0)).length === 0;
 
-    if (winConditions.includes(-3)) {
+    if (winConditions.includes(-3) || winConditions.includes(3)) {
       gameOver = true;
-      DisplayController.setStatus("WINNER O");
+      DisplayController.setStatus(
+        `${GameController.getActivePlayer().getName()} wins!`
+      );
     }
-    if (winConditions.includes(3)) {
+    if (isBoardFull() && !gameOver) {
       gameOver = true;
-      DisplayController.setStatus("WINNER X");
+      DisplayController.setStatus("Game Over. Nobody wins!");
     }
   };
   const isGameOver = () => gameOver;
