@@ -107,13 +107,15 @@ const GameController = (() => {
     });
   };
   const newGame = () => {
-    restartButton.addEventListener("click", GameController.newGame);
-
     gameOver = false;
     Gameboard.init();
     DisplayController.clearBoard();
     DisplayController.fillBoard();
-    GameController.togglePlayerTurn();
+    // Choose a random active player at the start of the game
+    activePlayer = players[Math.round(Math.random())];
+    DisplayController.setStatus(`${activePlayer.getName()}'s turn.`);
+
+    restartButton.addEventListener("click", GameController.newGame);
   };
   const addPlayer = (name, symbol) => {
     if (players.length === 2) {
