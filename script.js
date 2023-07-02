@@ -239,10 +239,14 @@ const DisplayController = (() => {
               GameController.getActivePlayer().getSymbol()
             )
           ) {
-            GameController.togglePlayerTurn();
+            GameController.checkWinCondition();
+
+            if (!GameController.getWinner()) {
+              GameController.togglePlayerTurn();
+            }
+
             DisplayController.clearBoard();
             DisplayController.fillBoard();
-            GameController.checkWinCondition();
           }
         });
 
@@ -267,11 +271,7 @@ const DisplayController = (() => {
         playerName.textContent = "Player 1";
       }
 
-      plusLabel.remove();
-      input.remove();
-
-      playerDiv.appendChild(oEmpty);
-      playerDiv.appendChild(playerName);
+      playerDiv.replaceChild(oEmpty.cloneNode(), plusLabel);
     } else if (playerDivClassName === ".player-two") {
       if (input.value !== "") {
         playerName.textContent = input.value;
@@ -279,12 +279,9 @@ const DisplayController = (() => {
         playerName.textContent = "Player 2";
       }
 
-      plusLabel.remove();
-      input.remove();
-
-      playerDiv.appendChild(xEmpty);
-      playerDiv.appendChild(playerName);
+      playerDiv.replaceChild(xEmpty.cloneNode(), plusLabel);
     }
+    playerDiv.replaceChild(playerName, input);
 
     if (playerDiv.classList.contains("border-2px-dashed")) {
       playerDiv.classList.remove("border-2px-dashed");
@@ -316,11 +313,10 @@ const DisplayController = (() => {
     }
   };
   const procPlayerWonLayout = () => {
-    // 4. Change winning player's card symbol to full
-    // 5. Proc the confetti on status text
+    // TODO: Proc the confetti on status text
     const winner = GameController.getWinner();
     const winnerQuery =
-      winner.getSymbol() === "O" ? ".player-one" : "player-two";
+      winner.getSymbol() === "O" ? ".player-one" : ".player-two";
     const winnerDiv = document.querySelector(winnerQuery);
 
     setBorderWidth(winnerDiv, 4);
