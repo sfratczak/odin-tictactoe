@@ -113,6 +113,7 @@ const GameController = (() => {
     Gameboard.init();
     DisplayController.clearBoard();
     DisplayController.fillBoard();
+    DisplayController.procLayoutReset();
     // Choose a random active player at the start of the game
     activePlayer = players[Math.round(Math.random())];
     DisplayController.setActivePlayerBorder();
@@ -352,6 +353,26 @@ const DisplayController = (() => {
     }
     setBorderWidth(gameboardContainer, 0);
   };
+  const procLayoutReset = () => {
+    const playerCards = [...document.querySelector(".players").children];
+
+    restartBtn.classList.remove("filled");
+
+    setBorderWidth(gameboardContainer, 8);
+
+    playerCards.forEach((card) => {
+      const cardSymbolImg = card.querySelector("img");
+      const cardSymbolType = cardSymbolImg.alt;
+
+      if (cardSymbolType === "O") {
+        card.replaceChild(oEmpty.cloneNode(), cardSymbolImg);
+      } else {
+        card.replaceChild(xEmpty.cloneNode(), cardSymbolImg);
+      }
+
+      setBorderWidth(card, 0);
+    });
+  };
 
   return {
     clearBoard,
@@ -364,6 +385,7 @@ const DisplayController = (() => {
     hideButton,
     revealButton,
     procGameOverLayout,
+    procLayoutReset,
   };
 })();
 
