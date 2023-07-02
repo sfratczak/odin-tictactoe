@@ -71,6 +71,7 @@ const GameController = (() => {
   const restartButton = document.querySelector(".btn-restart");
 
   let activePlayer = players[0];
+  let winner = null;
   let gameOver = false;
 
   const playerNameSetup = () => {
@@ -108,6 +109,7 @@ const GameController = (() => {
   };
   const newGame = () => {
     gameOver = false;
+    winner = null;
     Gameboard.init();
     DisplayController.clearBoard();
     DisplayController.fillBoard();
@@ -129,6 +131,7 @@ const GameController = (() => {
     DisplayController.setStatus(`${activePlayer.getName()}'s turn.`);
   };
   const getActivePlayer = () => activePlayer;
+  const getWinner = () => winner;
   const checkWinCondition = () => {
     const numBoard = Gameboard.getNumberedBoard();
     const row1sum = numBoard[0].reduce((a, b) => a + b, 0);
@@ -154,6 +157,7 @@ const GameController = (() => {
 
     if (winConditions.includes(-3) || winConditions.includes(3)) {
       gameOver = true;
+      winner = GameController.getActivePlayer();
       DisplayController.setStatus(
         `${GameController.getActivePlayer().getName()} wins!`
       );
@@ -172,6 +176,7 @@ const GameController = (() => {
     newGame,
     togglePlayerTurn,
     getActivePlayer,
+    getWinner,
     checkWinCondition,
     isGameOver,
     playerNameSetup,
@@ -310,16 +315,30 @@ const DisplayController = (() => {
       target.classList.add(borderOptions[pixels]);
     }
   };
+  const procPlayerWonLayout = () => {
+    // 4. Change winning player's card symbol to full
+    // 5. Proc the confetti on status text
+    const winner = GameController.getWinner();
+    const winnerQuery =
+      winner.getSymbol() === "O" ? ".player-one" : "player-two";
+    const winnerDiv = document.querySelector(winnerQuery);
+
+    setBorderWidth(winnerDiv, 4);
+
+    if (winner.getSymbol() === "O") {
+      winnerDiv.replaceChild(oFull.cloneNode(), winnerDiv.querySelector("img"));
+    } else {
+      winnerDiv.replaceChild(xFull.cloneNode(), winnerDiv.querySelector("img"));
+    }
+  };
   const procGameOverLayout = () => {
-    // 1. Make restart button filled
+    if (GameController.getWinner()) {
+      procPlayerWonLayout();
+    }
     if (!restartBtn.classList.contains("filled")) {
       restartBtn.classList.add("filled");
     }
-    // 2. Remove fat border from gameboard
     setBorderWidth(gameboardContainer, 0);
-    // 3. Leave winning three symbols on gameboard full, make the rest empty
-    // 4. Change winning player's card symbol to full
-    // 5. Proc the confetti on status text
   };
 
   return {
