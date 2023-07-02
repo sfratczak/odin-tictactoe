@@ -135,6 +135,10 @@ const GameController = (() => {
   };
   const getActivePlayer = () => activePlayer;
   const getWinner = () => winner;
+  const isBoardFull = () => {
+    const numBoard = Gameboard.getNumberedBoard();
+    return numBoard.filter((row) => row.includes(0)).length === 0;
+  };
   const checkWinCondition = () => {
     const numBoard = Gameboard.getNumberedBoard();
     const row1sum = numBoard[0].reduce((a, b) => a + b, 0);
@@ -155,8 +159,6 @@ const GameController = (() => {
       diag1sum,
       diag2sum,
     ];
-    const isBoardFull = () =>
-      numBoard.filter((row) => row.includes(0)).length === 0;
 
     if (winConditions.includes(-3) || winConditions.includes(3)) {
       gameOver = true;
@@ -188,6 +190,7 @@ const GameController = (() => {
     getWinner,
     checkWinCondition,
     isGameOver,
+    isBoardFull,
     playerNameSetup,
   };
 })();
@@ -269,7 +272,7 @@ const DisplayController = (() => {
           ) {
             GameController.checkWinCondition();
 
-            if (!GameController.getWinner()) {
+            if (!GameController.getWinner() && !GameController.isBoardFull()) {
               GameController.togglePlayerTurn();
             }
 
