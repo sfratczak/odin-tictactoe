@@ -277,7 +277,20 @@ const DisplayController = (() => {
     });
   };
   const setStatus = (str) => {
-    statusTextDiv.textContent = str;
+    const typingSpeed = 25;
+    let i = 0;
+
+    statusTextDiv.textContent = "";
+
+    const typeWriter = () => {
+      if (i < str.length) {
+        statusTextDiv.textContent += str.charAt(i);
+        i += 1;
+        setTimeout(typeWriter, typingSpeed);
+      }
+    };
+
+    typeWriter();
   };
   const setPlayerDivCSSActive = (playerDivClassName) => {
     const playerDiv = document.querySelector(playerDivClassName);
