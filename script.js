@@ -115,6 +115,7 @@ const GameController = (() => {
     DisplayController.fillBoard();
     // Choose a random active player at the start of the game
     activePlayer = players[Math.round(Math.random())];
+    DisplayController.setActivePlayerBorder();
     DisplayController.setStatus(`${activePlayer.getName()}'s turn.`);
 
     restartButton.addEventListener("click", GameController.newGame);
@@ -128,6 +129,7 @@ const GameController = (() => {
   };
   const togglePlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    DisplayController.setActivePlayerBorder();
     DisplayController.setStatus(`${activePlayer.getName()}'s turn.`);
   };
   const getActivePlayer = () => activePlayer;
@@ -205,6 +207,25 @@ const DisplayController = (() => {
   oEmpty.src = "./img/o-empty.svg";
   oEmpty.alt = "O";
 
+  const setBorderWidth = (target, pixels) => {
+    const borderOptions = {
+      dashed: "border-2px-dashed",
+      2: "border-2px",
+      4: "border-4px",
+      8: "border-8px",
+    };
+
+    // first remove border, if there is any
+    Object.values(borderOptions).forEach((value) => {
+      if (target.classList.contains(value)) {
+        target.classList.remove(value);
+      }
+    });
+
+    if (pixels !== 0) {
+      target.classList.add(borderOptions[pixels]);
+    }
+  };
   const hideBoardDiv = () => {
     gameboardContainer.style.display = "none";
   };
@@ -283,34 +304,29 @@ const DisplayController = (() => {
     }
     playerDiv.replaceChild(playerName, input);
 
-    if (playerDiv.classList.contains("border-2px-dashed")) {
-      playerDiv.classList.remove("border-2px-dashed");
-      playerDiv.classList.add("border-2px");
+    setBorderWidth(playerDiv, 0);
+  };
+  const setActivePlayerBorder = () => {
+    const activePlayer = GameController.getActivePlayer();
+    let activePlayerDiv = null;
+    let inactivePlayerDiv = null;
+
+    if (activePlayer.getSymbol() === "O") {
+      activePlayerDiv = document.querySelector(".player-one");
+      inactivePlayerDiv = document.querySelector(".player-two");
+    } else {
+      activePlayerDiv = document.querySelector(".player-two");
+      inactivePlayerDiv = document.querySelector(".player-one");
     }
+
+    setBorderWidth(activePlayerDiv, 2);
+    setBorderWidth(inactivePlayerDiv, 0);
   };
   const hideButton = (button) => {
     button.style.display = "none";
   };
   const revealButton = (button) => {
     button.style.display = "inline-block";
-  };
-  const setBorderWidth = (target, pixels) => {
-    const borderOptions = {
-      2: "border-2px",
-      4: "border-4px",
-      8: "border-8px",
-    };
-
-    // first remove border, if there is any
-    Object.values(borderOptions).forEach((value) => {
-      if (target.classList.contains(value)) {
-        target.classList.remove(value);
-      }
-    });
-
-    if (pixels !== 0) {
-      target.classList.add(borderOptions[pixels]);
-    }
   };
   const procPlayerWonLayout = () => {
     // TODO: Proc the confetti on status text
@@ -342,6 +358,7 @@ const DisplayController = (() => {
     fillBoard,
     setStatus,
     setPlayerDivCSSActive,
+    setActivePlayerBorder,
     hideBoardDiv,
     revealBoardDiv,
     hideButton,
