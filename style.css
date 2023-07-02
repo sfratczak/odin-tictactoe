@@ -215,11 +215,15 @@ main {
 .btn-restart:hover,
 .btn-restart.filled {
   background-color: var(--clr-black);
-  color: var(--clr-white);
+}
+
+.btn-restart.filled {
+  top: 32px;
+  left: -88px;
 }
 
 .btn-restart:hover img,
-.btn-restart.filled {
+.btn-restart.filled img {
   content: url(./img/refresh-outline-white.svg);
 }
 

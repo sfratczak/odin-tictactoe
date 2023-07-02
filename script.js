@@ -157,10 +157,12 @@ const GameController = (() => {
       DisplayController.setStatus(
         `${GameController.getActivePlayer().getName()} wins!`
       );
+      DisplayController.procGameOverLayout();
     }
     if (isBoardFull() && !gameOver) {
       gameOver = true;
       DisplayController.setStatus("Game Over. Nobody wins!");
+      DisplayController.procGameOverLayout();
     }
   };
   const isGameOver = () => gameOver;
@@ -180,6 +182,7 @@ const DisplayController = (() => {
   const gameboardContainer = document.querySelector(".gb-container");
   const gameboardDiv = document.getElementById("gameboard");
   const statusTextDiv = document.getElementById("status-text");
+  const restartBtn = document.querySelector(".btn-restart");
 
   const xFull = document.createElement("img");
   xFull.src = "./img/x-full.svg";
@@ -289,6 +292,35 @@ const DisplayController = (() => {
   const revealButton = (button) => {
     button.style.display = "inline-block";
   };
+  const setBorderWidth = (target, pixels) => {
+    const borderOptions = {
+      2: "border-2px",
+      4: "border-4px",
+      8: "border-8px",
+    };
+
+    // first remove border, if there is any
+    Object.values(borderOptions).forEach((value) => {
+      if (target.classList.contains(value)) {
+        target.classList.remove(value);
+      }
+    });
+
+    if (pixels !== 0) {
+      target.classList.add(borderOptions[pixels]);
+    }
+  };
+  const procGameOverLayout = () => {
+    // 1. Make restart button filled
+    if (!restartBtn.classList.contains("filled")) {
+      restartBtn.classList.add("filled");
+    }
+    // 2. Remove fat border from gameboard
+    setBorderWidth(gameboardContainer, 0);
+    // 3. Leave winning three symbols on gameboard full, make the rest empty
+    // 4. Change winning player's card symbol to full
+    // 5. Proc the confetti on status text
+  };
 
   return {
     clearBoard,
@@ -299,6 +331,7 @@ const DisplayController = (() => {
     revealBoardDiv,
     hideButton,
     revealButton,
+    procGameOverLayout,
   };
 })();
 
